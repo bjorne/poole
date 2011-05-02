@@ -17,6 +17,7 @@ module Poole
       it "finds the album by path" do
         Album.should_receive(:find_by_path).with("album_1").and_return(double('album').as_null_object)
         get '/albums/album_1'
+        last_response.status.should be(200)
       end
     end
     
@@ -49,6 +50,7 @@ module Poole
       end
 
       it "shows the subalbums header" do
+        last_response.status.should be(200)
         last_response.body.should =~ /Subalbums/
       end
 
@@ -68,6 +70,7 @@ module Poole
       it "finds the root's children" do
         Album.root.should_receive(:children).and_return([])
         get '/'
+        last_response.status.should be(200)
       end
 
       describe "with existing albums in root" do
