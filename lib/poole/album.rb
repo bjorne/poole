@@ -25,16 +25,25 @@ module Poole
 
     def children
       if ENV['RACK_ENV'] == "test"
-        load_children
+        load_children!
       else
-        @children ||= load_children
+        @children ||= load_children!
       end
     end
 
-    def load_children
+    def load_children!
       Dir[File.expand_path(File.join(self.dir, "*/#{YAML_CONFIG}"))].map do |dir|
         Album.new(dir, self)
       end
+    end
+
+    def load_recursive(albums = [])
+      albums.concat(children)
+      children.each do |child|
+        # @@albums << child
+        albums.concat(child.load_recursive)
+      end
+      albums
     end
     
     def parents
@@ -64,15 +73,6 @@ module Poole
     def to_s
       %Q[<Album title:"#{title}", path:"#{path}">]
     end
-
-    def load_recursive(albums = [])
-      albums.concat(children)
-      children.each do |child|
-        # @@albums << child
-        albums.concat(child.load_recursive)
-      end
-      albums
-    end
     
     # class methods
 
@@ -93,17 +93,12 @@ module Poole
         album.path == path
       end
     end
-
-    # def self.find_all(opts = {})
-    #   Dir[File.expand_path(File.join(albums_dir, opts[:path] || ".", "*/**/#{YAML_CONFIG}"))].map do |dir|
-    #     Album.new(dir)
-    #   end
-    # end
     
     def self.path_to_dir(path)
       File.expand_path(File.join(albums_dir, path))
     end
 
+    # Used in tests
     def self.reset
       @@albums = nil
       @@root = nil
