@@ -1,0 +1,7 @@
+%h2 Albums
+
+#albums
+  - @albums.each do |album|
+    %h3= link_to album.title, url("albums/#{ album.path }")
+    %p= album.description
+    %p= "#{album.photos.size} photos"

@@ -1,6 +1,8 @@
 source :rubygems
 
 gem 'sinatra'
+gem 'haml'
+gem 'sass'
 
 group :test, :development do
   gem 'capybara'

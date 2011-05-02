@@ -1,0 +1,15 @@
+%h2= @album.title
+
+%p= @album.description
+%p= "#{@album.photos.size} photos"
+
+
+- if @albums.size > 0
+  %h3 Subalbums
+
+  #albums
+    - @albums.each do |album|
+      %h3= link_to album.title, url("albums/#{ album.path }")
+      %p= album.description
+      %p= "#{album.photos.size} photos"
+      

@@ -112,7 +112,7 @@ module Poole
 
     describe "instance" do
       before(:each) do
-        @album = create_album(:title => "Hello World")
+        @album = create_album(:title => "Hello World", :description => "Description")
       end
 
       after(:each) do
@@ -130,10 +130,36 @@ module Poole
         end
       end
 
+      describe "#description" do
+        it "is read from yaml" do
+          @album.description.should == "Description"
+        end
+
+        it "defaults to nil" do
+          @album.config[:description] = nil
+          @album.description.should be_nil
+        end
+      end
+
       it "has a path without leading slash" do
         @album.path.should_not =~ /^\//
       end
+    end
 
+    describe "#photos" do
+      it "returns array of photos in the album" do
+        photos = ["image1.jpg", "image2.jpg"]
+        album = create_album(:title => "Hello", :photos => photos)
+        album.photos.sort.should == photos.sort
+        clean_albums
+      end
+
+      it "does not include files that are not photos" do
+        photos = ["notimage.rb", "notimage.py", "image.jpg"]
+        album = create_album(:title => "Hello", :photos => photos)
+        album.photos.should == ["image.jpg"]
+        clean_albums
+      end
     end
   end
 end

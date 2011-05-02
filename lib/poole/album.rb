@@ -4,8 +4,9 @@ module Poole
   class Album
     YAML_CONFIG = "index.yml"
     MISSING_TITLE = "Unnamed Album"
+    EXTENSIONS = %w[jpg jpeg]
     
-    attr_accessor :dir, :config, :parent
+    attr_accessor :dir, :config, :parent, :photos
     @@albums = nil
     
     class << self
@@ -21,6 +22,14 @@ module Poole
         @dir = File.dirname(dir)
         @config = YAML::load_file(dir).symbolize_keys
       end
+    end
+
+    def photos
+      @photos ||= load_photos!
+    end
+
+    def load_photos!
+      Dir[File.join(dir, "*.{#{EXTENSIONS.join(",")}}")].map { |f| File.basename(f) }
     end
 
     def children
@@ -60,6 +69,10 @@ module Poole
 
     def title
       config[:title] || MISSING_TITLE
+    end
+
+    def description
+      config[:description]
     end
 
     def ==(other)
