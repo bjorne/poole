@@ -1,0 +1,7 @@
+<% if @albums.size > 0 %>
+   <h3>Subalbums</h3>
+
+   <% @albums.each do |album| %>
+      <a href="<%= url("albums/#{ album.path }") %>"><%= album.title %></a>
+   <% end %>
+<% end %>

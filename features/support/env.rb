@@ -2,7 +2,14 @@
 
 ENV['RACK_ENV'] = 'test'
 
+APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
+
 require File.join(File.dirname(__FILE__), '..', '..', 'lib/poole.rb')
+
+# Set albums dir here
+Poole::Album.albums_dir = "/home/bjorne/sandbox" # File.expand_path(File.join(File.dirname(__FILE__), '../../sandbox'))
+
+require File.join(File.dirname(__FILE__), '..', '..', 'spec/factories/album_factory.rb')
 
 require 'capybara'
 require 'capybara/cucumber'

@@ -1,0 +1,5 @@
+<h2>Poole</h2>
+
+<% @albums.each do |album| %>
+      <a href="<%= url("albums/#{ album.path }") %>"><%= album.title %></a>
+<% end %>
