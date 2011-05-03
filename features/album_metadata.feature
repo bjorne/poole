@@ -1,7 +1,7 @@
-Feature: Image count
-  In order to see be informed on albums stats
+Feature: Album metadata
+  In order to see be informed on albums information
   As a user of the site
-  I want to see the number of images next to every album
+  I want to see album metadata when browsing the site
 
   Scenario: Front page albums
     Given there is an album "Album 1"

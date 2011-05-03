@@ -1,5 +1,5 @@
-Feature: Browsing
-  In order to see all photo albums
+Feature: Album browsing
+  In order to see images grouped into albums
   As a user of the site
   I want to browse photo albums
 
