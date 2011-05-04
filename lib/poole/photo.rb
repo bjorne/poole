@@ -14,9 +14,5 @@ module Poole
         album.path + '/' + App.image_dirs[size] + '/' + filename
       end
     end
-
-    def thumbnail_path
-      
-    end
   end
 end
