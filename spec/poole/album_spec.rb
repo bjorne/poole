@@ -60,6 +60,10 @@ module Poole
         clean_albums
       end
 
+      it "does not raise error if album not found" do
+        Album.find_by_path("notfound").should be_nil
+      end
+
       it "uses cached albums on sequential finds" do
         Album.reset
         Album.should_receive(:load_albums!).and_return([])
@@ -69,6 +73,12 @@ module Poole
       end
     end
 
+    describe ".find_by_path!" do
+      it "raises an error if the album cannot be found" do
+        lambda { Album.find_by_path!("some/album/that/doesnt/exist") }.should raise_error(AlbumNotFoundException)
+      end
+    end
+    
     describe "a nested album" do
       before(:each) do
         @outer = create_album(:title => "Outer")
@@ -146,18 +156,28 @@ module Poole
       end
     end
 
-    describe "#photos" do
+    describe "#photo_filenames" do
       it "returns array of photos in the album" do
         photos = ["image1.jpg", "image2.jpg"]
         album = create_album(:title => "Hello", :photos => photos)
-        album.photos.sort.should == photos.sort
+        album.photo_filenames.sort.should == photos.sort
         clean_albums
       end
 
       it "does not include files that are not photos" do
         photos = ["notimage.rb", "notimage.py", "image.jpg"]
         album = create_album(:title => "Hello", :photos => photos)
-        album.photos.should == ["image.jpg"]
+        album.photo_filenames.should == ["image.jpg"]
+        clean_albums
+      end
+    end
+
+    describe "#photos" do
+      it "returns an array of photo instances" do
+        photos = ["image.jpg"]
+        album = create_album(:title => "Hello", :photos => photos)
+        album.photos.first.filename.should == "image.jpg"
+        album.photos.first.should be_instance_of(Photo)
         clean_albums
       end
     end

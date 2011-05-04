@@ -13,3 +13,7 @@
       %p= album.description
       %p= "#{album.photos.size} photos"
       
+#album_photos
+  - @album.photos.each do |photo|
+    .thumb
+      %img{:src => url(photo.src_path(:thumb))}

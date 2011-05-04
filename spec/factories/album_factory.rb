@@ -22,6 +22,7 @@ def write_album(opts, parent)
   dir = File.expand_path(File.join(parent.dir, opts[:title].downcase.gsub(/ /, '_')))
   FileUtils.mkdir(dir) unless File.exists?(dir)
   File.open(File.join(dir, Poole::Album::YAML_CONFIG), 'w') { |f| f.puts yaml }
+  Poole::Album.reset
   Poole::Album.new(File.join(dir, "index.yml"), parent)
 end
 

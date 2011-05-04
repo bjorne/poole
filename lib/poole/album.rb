@@ -6,7 +6,7 @@ module Poole
     MISSING_TITLE = "Unnamed Album"
     EXTENSIONS = %w[jpg jpeg]
     
-    attr_accessor :dir, :config, :parent, :photos
+    attr_accessor :dir, :config, :parent, :photo_filenames
     @@albums = nil
     
     class << self
@@ -24,11 +24,21 @@ module Poole
       end
     end
 
+    def self.path_for_size(size)
+      App.image_dirs[size]
+    end
+    
     def photos
-      @photos ||= load_photos!
+      @photos ||= photo_filenames.map do |f|
+        Photo.new(f, self)
+      end
+    end
+    
+    def photo_filenames
+      @photo_filenames ||= load_photo_filenames!
     end
 
-    def load_photos!
+    def load_photo_filenames!
       Dir[File.join(dir, "*.{#{EXTENSIONS.join(",")}}")].map { |f| File.basename(f) }
     end
 
@@ -101,8 +111,15 @@ module Poole
       @@root ||= new(:root)
     end
 
+    def self.find_by_path!(path)
+      album = find_by_path(path)
+      # TODO: Does this string need to be html safe?
+      raise AlbumNotFoundException, "Album could not be found: #{path}" unless album
+      album
+    end
+    
     def self.find_by_path(path)
-      all_albums.find do |album|
+      album = all_albums.find do |album|
         album.path == path
       end
     end

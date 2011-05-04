@@ -18,3 +18,6 @@ Given /^the album has (\d+) photos$/ do |num_photos|
   create_photos(@album, (1..num_photos.to_i).map { |n| "DSC_#{n}.jpg" })
 end
 
+Given /^the album has a photo file "([^\"]*)"$/ do |photo|
+  create_photos(@album, [photo])
+end

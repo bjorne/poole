@@ -217,3 +217,7 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
+
+Then /^I should see header "([^\"]*)"$/ do |title|
+  page.should have_xpath("//h1 | //h2 | //h3 | //h4 | //h5", :text => title)
+end

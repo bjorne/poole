@@ -8,6 +8,18 @@ module Poole
       Poole::App
     end
 
+    describe "an album path" do
+      it "should find album by path" do
+        Album.should_receive(:find_by_path!).with('outer/inner/innerinner').and_raise(Exception)
+        get '/albums/outer/inner/innerinner'
+      end
+
+      it "shows a 404 page if the album cannot be found" do
+        get '/albums/does/not/exist'
+        last_response.status.should be(404)
+      end
+    end
+
     describe "an album" do
       before(:each) do
         create_album(:title => "Album 1")
