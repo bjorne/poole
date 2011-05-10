@@ -9,14 +9,14 @@ module Poole
     attr_accessor :dir, :config, :parent, :photo_filenames
     @@albums = nil
     
-    class << self
-      attr_accessor :albums_dir
-    end
+    # class << self
+    #   attr_accessor :albums_dir
+    # end
 
     def initialize(dir, parent = nil)
       @parent = parent
       if dir == :root
-        @dir = Album.albums_dir
+        @dir = App.albums_dir
         @config = {}
       else
         @dir = File.dirname(dir)
@@ -70,7 +70,7 @@ module Poole
     end
 
     def path
-      dir.sub(Album.albums_dir + "/", '')
+      dir.sub(App.albums_dir + "/", '')
     end
 
     def yaml_path
@@ -125,7 +125,7 @@ module Poole
     end
     
     def self.path_to_dir(path)
-      File.expand_path(File.join(albums_dir, path))
+      File.expand_path(File.join(App.albums_dir, path))
     end
 
     # Used in tests

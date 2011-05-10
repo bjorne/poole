@@ -3,12 +3,12 @@ require 'spec_helper'
 module Poole
   describe Album do
     it "#path_to_dir converts a path to a dir" do
-      Album.path_to_dir("hello").should == File.expand_path(File.join(Album.albums_dir, "hello"))
+      Album.path_to_dir("hello").should == File.expand_path(File.join(App.albums_dir, "hello"))
     end
 
     describe ".root" do
       it "is the base albums path" do
-        Album.root.dir.should == Album.albums_dir
+        Album.root.dir.should == App.albums_dir
       end
 
       it "'s children are the root level albums" do

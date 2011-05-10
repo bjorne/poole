@@ -38,7 +38,7 @@ def create_photos(album, photos)
 end
 
 def clean_albums
-  FileUtils.rm_r(Dir[File.join(Poole::Album.albums_dir, '*')])
+  FileUtils.rm_r(Dir[File.join(Poole::App.albums_dir, '*')])
   Poole::Album.reset
 end
 

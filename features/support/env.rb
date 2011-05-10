@@ -5,9 +5,17 @@ ENV['RACK_ENV'] = 'test'
 APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
 
 require File.join(File.dirname(__FILE__), '..', '..', 'lib/poole.rb')
+require File.join(File.dirname(__FILE__), '..', '..', 'lib/poole/cli.rb')
 
-# Set albums dir here
-Poole::Album.albums_dir = "/home/bjorne/sandbox" # File.expand_path(File.join(File.dirname(__FILE__), '../../sandbox'))
+# App config for test
+Poole::App.albums_dir = "/tmp/poole-sandbox"
+Poole::App.album_template_dir = File.join(APP_ROOT, "spec", "fixtures", "template")
+
+# Ensure albums dir exists
+unless File.exists? Poole::App.albums_dir
+  FileUtils.mkdir Poole::App.albums_dir
+end
+
 
 require File.join(File.dirname(__FILE__), '..', '..', 'spec/factories/album_factory.rb')
 
@@ -21,6 +29,19 @@ class AppWorld
   include Capybara
   include RSpec::Expectations
   include RSpec::Matchers
+
+  def capture(stream)
+    begin
+      stream = stream.to_s
+      eval "$#{stream} = StringIO.new"
+      yield
+      result = eval("$#{stream}").string
+    ensure
+      eval("$#{stream} = #{stream.upcase}")
+    end
+
+    result
+  end
 end
 
 World do

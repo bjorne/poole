@@ -8,8 +8,10 @@ module Poole
   class App < Sinatra::Base
 
     # defaults
+    set :album_template_dir, File.join(APP_ROOT, "template")
+    set :albums_dir, File.join(APP_ROOT, "albums")
     set :image_dirs, { :thumb => "photos/small", :large => "photos/large" }
-    set :public, Album.albums_dir
+    set :public, albums_dir
     
     get '/' do
       @albums = Album.root.children
