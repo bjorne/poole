@@ -4,6 +4,8 @@ gem 'sinatra'
 gem 'haml'
 gem 'sass'
 
+gem 'thor'
+
 group :test, :development do
   gem 'capybara'
   gem 'webrat'

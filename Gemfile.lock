@@ -94,4 +94,5 @@ DEPENDENCIES
   rspec
   sass
   sinatra
+  thor
   webrat
